@@ -112,6 +112,7 @@ class Catalin_SEO_Model_Resource_Indexer_Attribute extends Mage_Index_Model_Reso
             ->addFieldToFilter('main_table.frontend_input', array('in' => array('select', 'multiselect')));
         //->addSetInfo();
         if (!empty($attributeId)) {
+            // $collection->addFieldToFilter('`main_table`.`attribute_id`', $attributeId);
             $collection->addFieldToFilter('main_table.attribute_id', $attributeId);
         }
 
@@ -139,6 +140,21 @@ class Catalin_SEO_Model_Resource_Indexer_Attribute extends Mage_Index_Model_Reso
         foreach ($options as $option) {
             // Generate url key
             $urlKey = $this->_getHelper()->transliterate($option['label']);
+
+            // Check if this url key is taken and add -{count}
+            $count = 0;
+            $origUrlKey = $urlKey;
+            do {
+                $found = false;
+                foreach ($data as $line) {
+                    if ($line['url_key'] == $urlKey) {
+                        $found = true;
+                    }
+                }
+                if ($found) {
+                    $urlKey = $origUrlKey . '-' . ++$count;
+                }
+            } while ($found);
 
             $data[] = array(
                 'attribute_code' => $attribute->getAttributeCode(),
