@@ -42,7 +42,7 @@ class Catalin_SEO_Model_Resource_Indexer_Attribute extends Mage_Index_Model_Reso
 
     /**
      * Generate SEO values for catalog product attributes options
-     * 
+     *
      * @param int $attributeId - transmit this to limit processing to one specific attribute
      * @return Catalin_SEO_Model_Resource_Indexer_Attribute
      */
@@ -72,7 +72,7 @@ class Catalin_SEO_Model_Resource_Indexer_Attribute extends Mage_Index_Model_Reso
 
     /**
      * Save data into database
-     * 
+     *
      * @param array $data
      * @param array $deleteWhere
      */
@@ -108,10 +108,11 @@ class Catalin_SEO_Model_Resource_Indexer_Attribute extends Mage_Index_Model_Reso
         $collection = Mage::getSingleton('eav/config')
             ->getEntityType(Mage_Catalog_Model_Product::ENTITY)
             ->getAttributeCollection()
-            ->addFieldToFilter('`main_table`.`frontend_input`', array('in' => array('select', 'multiselect')));
+            // ->addFieldToFilter('`main_table`.`frontend_input`', array('in' => array('select', 'multiselect')));
+            ->addFieldToFilter('main_table.frontend_input', array('in' => array('select', 'multiselect')));
         //->addSetInfo();
         if (!empty($attributeId)) {
-            $collection->addFieldToFilter('`main_table`.`attribute_id`', $attributeId);
+            $collection->addFieldToFilter('main_table.attribute_id', $attributeId);
         }
 
         return $collection;
@@ -185,7 +186,7 @@ class Catalin_SEO_Model_Resource_Indexer_Attribute extends Mage_Index_Model_Reso
 
     /**
      * Reindex attribute options on attribute save event
-     * 
+     *
      * @param Mage_Index_Model_Event $event
      * @return Catalin_SEO_Model_Resource_Indexer_Attribute
      */
